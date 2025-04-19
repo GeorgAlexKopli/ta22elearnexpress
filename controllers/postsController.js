@@ -42,4 +42,18 @@ router.get('/delete/:id', async (req, res) => {
     res.redirect('/posts');
 });
 
+router.get('/:id', async (req, res) => {
+    try {
+        const post = await db.Post.findByPk(req.params.id);
+        if (!post) {
+            return res.status(404).send('Post not found');
+        }
+        res.render('posts/show.njk', { post });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
 export default router;
